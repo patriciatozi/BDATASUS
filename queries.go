@@ -23,17 +23,17 @@ const queryConsultaPorClassificacaoUF = "SELECT COUNT(*) FROM Paciente WHERE id_
 var insereZonaStmt *sql.Stmt
 var listarZonaStmt *sql.Stmt
 
-var inserePatologiaStmt *sql.Stmt
-var listarPatologiaStmt *sql.Stmt
+//var inserePatologiaStmt *sql.Stmt
+//var listarPatologiaStmt *sql.Stmt
 
-var insereUFStmt *sql.Stmt
-var listarUFStmt *sql.Stmt
+//var insereUFStmt *sql.Stmt
+//var listarUFStmt *sql.Stmt
 
-var insereClassificacaoEtariaStmt *sql.Stmt
-var listarClassificacaoEtariaStmt *sql.Stmt
+//var insereClassificacaoEtariaStmt *sql.Stmt
+//var listarClassificacaoEtariaStmt *sql.Stmt
 
-var inserePacienteStmt *sql.Stmt
-var listarPacienteStmt *sql.Stmt
+//var inserePacienteStmt *sql.Stmt
+//var listarPacienteStmt *sql.Stmt
 
 var consultaPacientePorZonaEPatologiaStmt *sql.Stmt
 var consultaPacientePorZonaEUFStmt *sql.Stmt
@@ -53,7 +53,7 @@ var consultaPacientePorClassificacaoEtariaEUFStmt *sql.Stmt
 
 func InitStatements(db *sql.DB) {
 	// Prepare statement for inserting data in Zona
-	stmtIns, err := db.Prepare("INSERT INTO Zona VALUES( ?, ?, ? )")
+	stmtIns, err := db.Prepare("INSERT INTO Zona VALUES( ?, ? )")
 	if err != nil {
 		panic(err.Error()) // proper error handling instead of panic in your app
 	}
@@ -150,225 +150,22 @@ func InitStatements(db *sql.DB) {
 	consultaPacientePorClassificacaoEtariaEUFStmt = stmtQuery
 }
 
-func consultaPacientePorZonaEPatologia(idZona, idPatologia int) int {
-	var contagem int
-	v, err := consultaPacientePorZonaEPatologiaStmt.Query(idZona, idPatologia)
-	if err != nil {
-		panic (err)
-	}
-
-	v.Next()
-
-	err = v.Scan(&contagem)
-	if err != nil{
-		panic(err)
-	}
-
-	return contagem
-}
-
-func consultaPacientePorZonaEUF(idZona int, idUF int) int {
-	var contagem int
-	v, err := consultaPacientePorZonaEUFStmt.Query(idZona, idUF)
-	if err != nil {
-		panic (err)
-	}
-
-	v.Next()
-
-	err = v.Scan(&contagem)
-	if err != nil{
-		panic(err)
-	}
-
-	return contagem
-}
-
-func consultaPacientePorZonaEClassificacaoEtaria(idZona int, idClassificacao int) int {
-	var contagem int
-	v, err := consultaPacientePorZonaEClassificacaoEtariaStmt.Query(idZona, idClassificacao)
-	if err != nil {
-		panic (err)
-	}
-
-	v.Next()
-
-	err = v.Scan(&contagem)
-	if err != nil{
-		panic(err)
-	}
-
-	return contagem
-}
-
-func consultaPacientePorPatologiaEZona(idPatologia int, idZona int) int {
-	var contagem int
-	v, err := consultaPacientePorPatologiaEZonaStmt.Query(idPatologia, idZona)
-	if err != nil {
-		panic (err)
-	}
-
-	v.Next()
-
-	err = v.Scan(&contagem)
-	if err != nil{
-		panic(err)
-	}
-
-	return contagem
-}
-
-func consultaPacientePorPatologiaEUF(idPatologia int, idUF int) int {
-	var contagem int
-	v, err := consultaPacientePorPatologiaEUFStmt.Query(idPatologia, idUF)
-	if err != nil {
-		panic (err)
-	}
-
-	v.Next()
-
-	err = v.Scan(&contagem)
-	if err != nil{
-		panic(err)
-	}
-
-	return contagem
-}
-
-func consultaPacientePorPatologiaEClassificacaoEtaria(idPatologia int, idClassificacao int) int {
-	var contagem int
-	v, err := consultaPacientePorPatologiaEClassificacaoEtariaStmt.Query(idPatologia, idClassificacao)
-	if err != nil {
-		panic (err)
-	}
-
-	v.Next()
-
-	err = v.Scan(&contagem)
-	if err != nil{
-		panic(err)
-	}
-
-	return contagem
-}
-
-func consultaPacientePorUFEZona(idUF int, idZona int) int {
-	var contagem int
-	v, err := consultaPacientePorUFEZonaStmt.Query(idUF, idZona)
-	if err != nil {
-		panic (err)
-	}
-
-	v.Next()
-
-	err = v.Scan(&contagem)
-	if err != nil{
-		panic(err)
-	}
-
-	return contagem
-}
-
-func consultaPacientePorUFEPatologia(idUF int, idPatologia int) int {
-	var contagem int
-	v, err := consultaPacientePorUFEPatologiaStmt.Query(idUF, idPatologia)
-	if err != nil {
-		panic (err)
-	}
-
-	v.Next()
-
-	err = v.Scan(&contagem)
-	if err != nil{
-		panic(err)
-	}
-
-	return contagem
-}
-
-func consultaPacientePorUFEClassificacaoEtaria(idUF int, idClassificacao int) int {
-	var contagem int
-	v, err := consultaPacientePorUFEClassificacaoEtariaStmt.Query(idUF, idClassificacao)
-	if err != nil {
-		panic (err)
-	}
-
-	v.Next()
-
-	err = v.Scan(&contagem)
-	if err != nil{
-		panic(err)
-	}
-
-	return contagem
-}
-
-func consultaPacientePorClassificacaoEtariaEZona(idClassificacao int, idZona int) int {
-	var contagem int
-	v, err := consultaPacientePorClassificacaoEtariaEZonaStmt.Query(idClassificacao, idZona)
-	if err != nil {
-		panic (err)
-	}
-
-	v.Next()
-
-	err = v.Scan(&contagem)
-	if err != nil{
-		panic(err)
-	}
-
-	return contagem
-}
-
-func consultaPacientePorClassificacaoEtariaEPatologia(idClassificacao int, idPatologia int) int {
-	var contagem int
-	v, err := consultaPacientePorClassificacaoEtariaEPatologiaStmt.Query(idClassificacao, idPatologia)
-	if err != nil {
-		panic (err)
-	}
-
-	v.Next()
-
-	err = v.Scan(&contagem)
-	if err != nil{
-		panic(err)
-	}
-
-	return contagem
-}
-
-func consultaPacientePorClassificacaoEtariaEUF(idClassificacao int, idUF int) int {
-	var contagem int
-	v, err := consultaPacientePorClassificacaoEtariaEUFStmt.Query(idClassificacao, idUF)
-	if err != nil {
-		panic (err)
-	}
-
-	v.Next()
-
-	err = v.Scan(&contagem)
-	if err != nil{
-		panic(err)
-	}
-
-	return contagem
-}
 
 func CleanStatements() {
 	insereZonaStmt.Close()
 	listarZonaStmt.Close()
 
-	inserePacienteStmt.Close()
-	listarPatologiaStmt.Close()
+	//inserePatologiaStmt.Close()
+	//listarPatologiaStmt.Close()
 
-	insereUFStmt.Close()
-	listarUFStmt.Close()
+	//insereUFStmt.Close()
+	//listarUFStmt.Close()
 
-	insereClassificacaoEtariaStmt.Close()
-	listarClassificacaoEtariaStmt.Close()
+	//insereClassificacaoEtariaStmt.Close()
+	//listarClassificacaoEtariaStmt.Close()
 
-	inserePacienteStmt.Close()
-	listarPacienteStmt.Close()
+	// inserePacienteStmt.Close()
+	//listarPacienteStmt.Close()
 
 	consultaPacientePorZonaEPatologiaStmt.Close()
 	consultaPacientePorZonaEUFStmt.Close()
