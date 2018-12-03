@@ -105,6 +105,94 @@ var routes = Routes{
 		"/pacienteZonaPorClassificacao",
 		pacienteZonaPorClassificacaoIndex,
 	},
+	Route{
+		"pacienteZonaPorPatologia",
+		"GET",
+		"/pacienteZonaPorPatologia",
+		pacienteZonaPorPatologiaIndex,
+	},
+	Route{
+		"pacienteZonaPorUF",
+		"GET",
+		"/pacienteZonaPorUF",
+		pacienteZonaPorUFIndex,
+	},
+}
+
+func NewRouter() *mux.Router {
+	router := mux.NewRouter().StrictSlash(true)
+	for _, route := range routes {
+		var handler http.Handler
+		handler = route.HandlerFunc
+		handler = Logger(handler, route.Name)
+
+		router.
+			Methods(route.Method).
+			Path(route.Pattern).
+			Name(route.Name).
+			Handler(handler)
+
+	}
+	return router
+}
+		"GET",
+		"/consultaPacientePorPatologiaEUF",
+		consultaPacientePorPatologiaEUFIndex,
+	},
+	Route{
+		"consultaPacientePorPatologiaEClassificacaoEtaria",
+		"GET",
+		"/consultaPacientePorPatologiaEClassificacaoEtaria",
+		consultaPacientePorPatologiaEClassificacaoEtariaIndex,
+	},
+	Route{
+		"consultaPacientePorUFEZona",
+		"GET",
+		"/consultaPacientePorUFEZona",
+		consultaPacientePorUFEZonaIndex,
+	},
+	Route{
+		"consultaPacientePorUFEPatologia",
+		"GET",
+		"/consultaPacientePorUFEPatologia",
+		consultaPacientePorUFEPatologiaIndex,
+	},
+	Route{
+		"consultaPacientePorUFEClassificacaoEtaria",
+		"GET",
+		"/consultaPacientePorUFEClassificacaoEtaria",
+		consultaPacientePorUFEClassificacaoEtariaIndex,
+	},
+	Route{
+		"consultaPacientePorClassificacaoEtariaEZona",
+		"GET",
+		"/consultaPacientePorClassificacaoEtariaEZona",
+		consultaPacientePorClassificacaoEtariaEZonaIndex,
+	},
+	Route{
+		"consultaPacientePorClassificacaoEtariaEPatologia",
+		"GET",
+		"/consultaPacientePorClassificacaoEtariaEPatologia",
+		consultaPacientePorClassificacaoEtariaEPatologiaIndex,
+	},
+	Route{
+		"consultaPacientePorClassificacaoEtariaEUF",
+		"GET",
+		"/consultaPacientePorClassificacaoEtariaEUF",
+		consultaPacientePorClassificacaoEtariaEUFIndex,
+	},
+	Route{
+		"consultaPacienteZonaPorClassificacao",
+		"GET",
+		"/consultaPacienteZonaPorClassificacao",
+		consultaPacienteZonaPorClassificacaoIndex,
+	},
+	Route{
+		"pacienteZonaPorClassificacao",
+		"GET",
+		"/pacienteZonaPorClassificacao",
+		pacienteZonaPorClassificacaoIndex,
+	},
 }
 
 func NewRouter() *mux.Router {
