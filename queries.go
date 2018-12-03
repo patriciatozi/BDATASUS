@@ -30,7 +30,7 @@ var listarZonaStmt *sql.Stmt
 //var listarUFStmt *sql.Stmt
 
 //var insereClassificacaoEtariaStmt *sql.Stmt
-//var listarClassificacaoEtariaStmt *sql.Stmt
+var listarClassificacaoEtariaStmt *sql.Stmt
 
 //var inserePacienteStmt *sql.Stmt
 //var listarPacienteStmt *sql.Stmt
@@ -64,6 +64,12 @@ func InitStatements(db *sql.DB) {
 		panic(err.Error()) // proper error handling instead of panic in your app
 	}
 	listarZonaStmt = stmtQuery
+
+	stmtQuery, err = db.Prepare("SELECT * FROM ClassificacaoEtaria")
+	if err != nil {
+		panic(err.Error()) // proper error handling instead of panic in your app
+	}
+	listarClassificacaoEtariaStmt = stmtQuery
 
 	//Zona e Patologia
 	stmtQuery, err = db.Prepare(queryConsultaPorZonaPatologia)
@@ -162,7 +168,7 @@ func CleanStatements() {
 	//listarUFStmt.Close()
 
 	//insereClassificacaoEtariaStmt.Close()
-	//listarClassificacaoEtariaStmt.Close()
+	listarClassificacaoEtariaStmt.Close()
 
 	// inserePacienteStmt.Close()
 	//listarPacienteStmt.Close()

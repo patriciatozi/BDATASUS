@@ -2,14 +2,24 @@ package main
 
 
 type Zona struct {
-	id_zona int
-	nome string
+	Id_zona int
+	Nome string
+}
+
+type ZonaClassificacaoContagem struct {
+	ClassificacaoEtaria ClassificacaoEtaria
+	Contagem int
+}
+
+type ZonaClassificacoes struct {
+	Zona Zona
+	Classificacoes []ZonaClassificacaoContagem
 }
 
 type ClassificacaoEtaria struct{
-	id_classificacao int
-	faixa_etaria string
-	classificacao string
+	Id_classificacao int
+	Faixa_etaria string
+	Classificacao string
 }
 
 type Patologia struct {

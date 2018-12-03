@@ -322,3 +322,25 @@ func consultaPacientePorClassificacaoEtariaEUFIndex(w http.ResponseWriter, r *ht
 
 	w.Write([]byte(x))
 }
+
+func consultaPacienteZonaPorClassificacaoIndex(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+
+	dados := ConstroiClassificacaoEtariaPorZona()
+
+	x, err := json.MarshalIndent(dados, " ", "    ")
+	if err != nil {
+		panic(err)
+	}
+
+	w.Write([]byte(x))
+}
+
+func pacienteZonaPorClassificacaoIndex(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+
+	dados := GeradorHTMLClassificacaoEtariaPorZona()
+	w.Write([]byte(dados))
+}

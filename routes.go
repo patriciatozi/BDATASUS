@@ -93,6 +93,18 @@ var routes = Routes{
 		"/consultaPacientePorClassificacaoEtariaEUF",
 		consultaPacientePorClassificacaoEtariaEUFIndex,
 	},
+	Route{
+		"consultaPacienteZonaPorClassificacao",
+		"GET",
+		"/consultaPacienteZonaPorClassificacao",
+		consultaPacienteZonaPorClassificacaoIndex,
+	},
+	Route{
+		"pacienteZonaPorClassificacao",
+		"GET",
+		"/pacienteZonaPorClassificacao",
+		pacienteZonaPorClassificacaoIndex,
+	},
 }
 
 func NewRouter() *mux.Router {

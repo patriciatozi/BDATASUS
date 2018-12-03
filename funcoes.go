@@ -16,7 +16,7 @@ func ListarZona() []Zona {
 
 	for v.Next() {
 		var zona Zona
-		err = v.Scan(&zona.id_zona, &zona.nome)
+		err = v.Scan(&zona.Id_zona, &zona.Nome)
 		if err != nil {
 			panic(err)
 		}
@@ -33,24 +33,72 @@ func ListarZona() []Zona {
 //	}
 //}
 
-//func ListarClassificacaoEtaria() []ClassificacaoEtaria {
-//	var classificacao_etaria = make([]ClassificacaoEtaria, 0)
-//	v, err := listarClassificacaoEtariaStmt.Query()
-//	if err != nil {
-//		panic(err)
-//	}
-//
-//	for v.Next() {
-//		var classificacaoEtaria ClassificacaoEtaria
-//		err = v.Scan(&classificacaoEtaria.id_classificacao, &classificacaoEtaria.faixa_etaria, &classificacaoEtaria.classificacao)
-//		if err != nil {
-//			panic(err)
-//		}
-//		classificacao_etaria = append(classificacao_etaria, classificacaoEtaria)
-//	}
-//
-//	return classificacao_etaria
-//}
+func ListarClassificacaoEtaria() []ClassificacaoEtaria {
+	var classificacao_etaria = make([]ClassificacaoEtaria, 0)
+	v, err := listarClassificacaoEtariaStmt.Query()
+	if err != nil {
+		panic(err)
+	}
+
+	for v.Next() {
+		var classificacaoEtaria ClassificacaoEtaria
+		err = v.Scan(&classificacaoEtaria.Id_classificacao, &classificacaoEtaria.Faixa_etaria, &classificacaoEtaria.Classificacao)
+		if err != nil {
+			panic(err)
+		}
+		classificacao_etaria = append(classificacao_etaria, classificacaoEtaria)
+	}
+
+	return classificacao_etaria
+}
+
+
+func ConstroiClassificacaoEtariaPorZona() []ZonaClassificacoes {
+	var zonas = ListarZona()
+	var classificacoes = ListarClassificacaoEtaria()
+
+	var dados = make([]ZonaClassificacoes, len(zonas) + 1)
+
+	// region Criar Total
+	var total = ZonaClassificacoes{
+		Zona: Zona{
+			Id_zona: -1,
+			Nome: "TOTAL",
+		},
+		Classificacoes: make([]ZonaClassificacaoContagem, len(classificacoes)),
+	}
+	for j := 0; j < len(classificacoes); j++ {
+		var classificacao = classificacoes[j]
+		total.Classificacoes[j] = ZonaClassificacaoContagem{
+			ClassificacaoEtaria: classificacao,
+			Contagem: 0,
+		}
+	}
+	// endregion
+	// region Construir Classificações
+	for i := 0; i < len(zonas); i++ {
+		var zona = zonas[i]
+		var dado = ZonaClassificacoes{
+			Zona: zona,
+			Classificacoes: make([]ZonaClassificacaoContagem, len(classificacoes)),
+		}
+		for j := 0; j < len(classificacoes); j++ {
+			var classificacao = classificacoes[j]
+			dado.Classificacoes[j] = ZonaClassificacaoContagem{
+				ClassificacaoEtaria: classificacao,
+				Contagem: consultaPacientePorClassificacaoEtariaEZona(classificacao.Id_classificacao, zona.Id_zona),
+			}
+
+			total.Classificacoes[j].Contagem += dado.Classificacoes[j].Contagem
+		}
+		dados[i+1] = dado
+	}
+	// endregion
+
+	dados[0] = total
+
+	return dados
+}
 
 //func InserePatologia(id int, nome string) {
 //	_, err := inserePatologiaStmt.Exec(id, nome)
