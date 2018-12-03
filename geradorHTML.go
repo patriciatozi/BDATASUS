@@ -2,6 +2,21 @@ package main
 
 import "fmt"
 
+func GerarIndex() string {
+	return `
+<html>
+	<head>
+		<title>BDDATASUS</title>
+	</head>
+	<body>
+		<ol>
+			<li><a href="/pacienteZonaPorClassificacao">Classificacao Etaria Por Zona</a></li>
+		</ol>
+	</body>
+</html>
+`
+}
+
 func GeradorHTMLClassificacaoEtariaPorZona() string {
 	var dados = ConstroiClassificacaoEtariaPorZona()
 	var html = ""
@@ -79,6 +94,8 @@ func GeradorHTMLClassificacaoEtariaPorZona() string {
 	// endregion
 
 	html += `
+	<BR>
+	<a href="/">Voltar</a>
 </body>
 </html>
 `

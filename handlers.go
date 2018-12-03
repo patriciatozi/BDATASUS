@@ -8,7 +8,7 @@ import (
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Welcome!")
+	fmt.Fprintln(w, GerarIndex())
 }
 
 func consultaPacientePorZonaEPatologiaIndex(w http.ResponseWriter, r *http.Request) {
