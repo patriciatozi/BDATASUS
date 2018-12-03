@@ -52,8 +52,101 @@ func ListarClassificacaoEtaria() []ClassificacaoEtaria {
 	return classificacao_etaria
 }
 
+func ConstroiZonaPorPatologia() []ZonaPatologias {
+	var zonas = ListarZona()
+	var patologias = ListarPatologia()
 
-func ConstroiClassificacaoEtariaPorZona() []ZonaClassificacoes {
+	var dados = make([]ZonaPatologias, len(zonas) + 1)
+
+	// region Criar Total
+	var total = ZonaPatologias{
+		Zona: Zona{
+			Id_zona: -1,
+			Nome: "TOTAL",
+		},
+		Patologias: make([]ZonaPatologiaContagem, len(patologias)),
+	}
+	for j := 0; j < len(patologias); j++ {
+		var patologias = patologias[j]
+		total.Patologias[j] = ZonaPatologiaContagem{
+			Patologia: patologias,
+			Contagem: 0,
+		}
+	}
+	// endregion
+	// region Construir Classificações
+	for i := 0; i < len(zonas); i++ {
+		var zona = zonas[i]
+		var dado = ZonaPatologias{
+			Zona: zona,
+			Patologias: make([]ZonaPatologiaContagem, len(patologias)),
+		}
+		for j := 0; j < len(patologias); j++ {
+			var patologia = patologias[j]
+			dado.Patologias[j] = ZonaPatologiaContagem{
+				Patologia: patologia,
+				Contagem: consultaPacientePorZonaEPatologia(zona.Id_zona, patologia.Id_patologia),
+			}
+
+			total.Patologias[j].Contagem += dado.Patologias[j].Contagem
+		}
+		dados[i+1] = dado
+	}
+	// endregion
+
+	dados[0] = total
+
+	return dados
+}
+
+func ConstroiZonaPorUF() []ZonaUFS {
+	var zonas = ListarZona()
+	var ufs = ListarUF()
+
+	var dados = make([]ZonaUFS, len(zonas) + 1)
+
+	// region Criar Total
+	var total = ZonaUFS{
+		Zona: Zona{
+			Id_zona: -1,
+			Nome: "TOTAL",
+		},
+		UFS: make([]ZonaUFContagem, len(ufs)),
+	}
+	for j := 0; j < len(ufs); j++ {
+		var uf = ufs[j]
+		total.UFS[j] = ZonaUFContagem{
+			UF: uf,
+			Contagem: 0,
+		}
+	}
+	// endregion
+	// region Construir UF
+	for i := 0; i < len(zonas); i++ {
+		var zona = zonas[i]
+		var dado = ZonaUFS{
+			Zona: zona,
+			UFS: make([]ZonaUFContagem, len(ufs)),
+		}
+		for j := 0; j < len(ufs); j++ {
+			var uf = ufs[j]
+			dado.UFS[j] = ZonaUFContagem{
+				UF: uf,
+				Contagem: consultaPacientePorZonaEUF(zona.Id_zona, uf.Id_uf),
+			}
+
+			total.UFS[j].Contagem += dado.UFS[j].Contagem
+		}
+		dados[i+1] = dado
+	}
+	// endregion
+
+	dados[0] = total
+
+	return dados
+}
+
+func ConstroiZonaPorClassificacaoEtaria() []ZonaClassificacoes {
 	var zonas = ListarZona()
 	var classificacoes = ListarClassificacaoEtaria()
 
@@ -107,24 +200,24 @@ func ConstroiClassificacaoEtariaPorZona() []ZonaClassificacoes {
 //	}
 //}
 
-//func ListarPatologia() []Patologia {
-//	var patologia = make([]Patologia, 0)
-//	v, err := listarPatologiaStmt.Query()
-//	if err != nil {
-//		panic(err)
-//	}
-//
-//	for v.Next() {
-//		var patologias Patologia
-//		err = v.Scan(&patologias.id_patologia, &patologias.nome)
-//		if err != nil {
-//			panic(err)
-//		}
-//		patologia = append(patologia, patologias)
-//	}
-//
-//	return patologia
-//}
+func ListarPatologia() []Patologia {
+	var patologia = make([]Patologia, 0)
+	v, err := listarPatologiaStmt.Query()
+	if err != nil {
+		panic(err)
+	}
+
+	for v.Next() {
+		var patologias Patologia
+		err = v.Scan(&patologias.Id_patologia, &patologias.Nome)
+		if err != nil {
+			panic(err)
+		}
+		patologia = append(patologia, patologias)
+	}
+
+	return patologia
+}
 
 //func InsereUF(id int, sigla string, nome string) {
 //	_, err := inserePatologiaStmt.Exec(id, sigla, nome)
@@ -133,24 +226,24 @@ func ConstroiClassificacaoEtariaPorZona() []ZonaClassificacoes {
 //	}
 //}
 
-//func ListarUF() []UF {
-//	var uf = make([]UF, 0)
-//	v, err := listarUFStmt.Query()
-//	if err != nil {
-//		panic(err)
-//	}
-//
-//	for v.Next() {
-//		var estado UF
-//		err = v.Scan(&estado.id_uf, &estado.sigla, &estado.nome)
-//		if err != nil {
-//			panic(err)
-//		}
-//		uf = append(uf, estado)
-//	}
-//
-//	return uf
-//}
+func ListarUF() []UF {
+	var uf = make([]UF, 0)
+	v, err := listarUFStmt.Query()
+	if err != nil {
+		panic(err)
+	}
+
+	for v.Next() {
+		var estado UF
+		err = v.Scan(&estado.Id_uf, &estado.Sigla, &estado.Nome)
+		if err != nil {
+			panic(err)
+		}
+		uf = append(uf, estado)
+	}
+
+	return uf
+}
 
 //func InserePaciente(id int, nome string, id_classificacao int, sexo string, endereco string, id_patologia int, presenca_patologia bool, id_uf int, id_zona int) {
 //	_, err := inserePatologiaStmt.Exec(id, nome, id_classificacao, sexo, endereco, id_patologia, presenca_patologia, id_uf, id_zona)
