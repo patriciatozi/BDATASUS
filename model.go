@@ -6,6 +6,26 @@ type Zona struct {
 	Nome string
 }
 
+type ZonaPatologiaContagem struct {
+	Patologia Patologia
+	Contagem int
+}
+
+type ZonaPatologias struct {
+	Zona Zona
+	Patologias []ZonaPatologiaContagem
+}
+
+type ZonaUFContagem struct {
+	UF UF
+	Contagem int
+}
+
+type ZonaUFS struct {
+	Zona Zona
+	UFS []ZonaUFContagem
+}
+
 type ZonaClassificacaoContagem struct {
 	ClassificacaoEtaria ClassificacaoEtaria
 	Contagem int
@@ -23,24 +43,24 @@ type ClassificacaoEtaria struct{
 }
 
 type Patologia struct {
-	id_patologia int
-	nome string
+	Id_patologia int
+	Nome string
 }
 
 type UF	struct {
-	id_uf int
-	sigla string
-	nome string
+	Id_uf int
+	Sigla string
+	Nome string
 }
 
 type Paciente struct {
-	id_paciente int
-	nome string
-	id_classificacao int
-	sexo string
-	endereco string
-	id_patologia int
-	presenca_patologia bool
-	id_uf int
-	id_zona int
+	Id_paciente int
+	Nome string
+	Id_classificacao int
+	Sexo string
+	Endereco string
+	Id_patologia int
+	Presenca_patologia bool
+	Id_uf int
+	Id_zona int
 }
